@@ -1,1 +1,1 @@
-# WBNTApplication
+WBNTApplication is a Flask-based web application designed to serve dynamic content efficiently while utilizing a SQLite database for data storage. It operates on port 5000 and incorporates routing mechanisms defined in a separate routes.py file, ensuring a modular and organized codebase. This project provides a solid foundation for developing scalable web applications or APIs with Flask and SQLite.
