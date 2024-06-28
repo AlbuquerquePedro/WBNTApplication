@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, or_
 from sqlalchemy.ext.declarative import declarative_base
 import os
 from datetime import datetime
@@ -77,6 +77,18 @@ def delete_note(id):
         session.rollback()
         return f'Failed to delete note. Error: {str(e)}'
 
+def search_notes(keyword):
+    try:
+        notes = session.query(Note).filter(
+            or_(Note.title.like(f'%{keyword}%'), Note.content.like(f'%{keyword}%'))
+        ).all()
+        if notes:
+            return notes
+        else:
+            return 'No notes found matching your search criteria.'
+    except Exception as e:
+        return f'Failed to search notes. Error: {str(e)}'
+
 if __name__ == '__main__':
     print(create_note('Sample Note', 'This is a sample note.'))
     notes = read_notes()
@@ -87,3 +99,10 @@ if __name__ == '__main__':
             print(f'{note.title}: {note.content} (created on {note.date_created})')
     print(update_note(1, title='Updated Sample Note', content='This note has been updated.'))
     print(delete_note(1))
+    print('Search result:')
+    search_results = search_notes('sample')  # Example search
+    if isinstance(search_results, str):
+        print(search_results)
+    else:
+  for note in search_results:
+            print(f'{note.title}: {note.content} (created on {note.date_created})')
